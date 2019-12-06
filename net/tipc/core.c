@@ -118,13 +118,13 @@ static int __init tipc_init(void)
 			      TIPC_CRITICAL_IMPORTANCE;
 	sysctl_tipc_rmem[2] = TIPC_CONN_OVERLOAD_LIMIT;
 
-	err = tipc_netlink_start();
+	err = tipc_register_sysctl();
 	if (err)
-		goto out_netlink;
+		goto out_sysctl;
 
-	err = tipc_netlink_compat_start();
+	err = register_pernet_device(&tipc_net_ops);
 	if (err)
-		goto out_netlink_compat;
+		goto out_pernet;
 
 	err = tipc_socket_init();
 	if (err)
@@ -142,8 +142,21 @@ static int __init tipc_init(void)
 	if (err)
 		goto out_bearer;
 
+	err = tipc_netlink_start();
+	if (err)
+		goto out_netlink;
+
+	err = tipc_netlink_compat_start();
+	if (err)
+		goto out_netlink_compat;
+
 	pr_info("Started in single node mode\n");
 	return 0;
+
+out_netlink_compat:
+	tipc_netlink_stop();
+out_netlink:
+	tipc_bearer_cleanup();
 out_bearer:
 	unregister_pernet_subsys(&tipc_net_ops);
 out_pernet:
@@ -161,11 +174,16 @@ out_netlink:
 
 static void __exit tipc_exit(void)
 {
+	tipc_netlink_compat_stop();
+	tipc_netlink_stop();
 	tipc_bearer_cleanup();
 	unregister_pernet_subsys(&tipc_net_ops);
 	tipc_netlink_stop();
 	tipc_netlink_compat_stop();
 	tipc_socket_stop();
+	unregister_pernet_device(&tipc_topsrv_net_ops);
+	tipc_socket_stop();
+	unregister_pernet_device(&tipc_net_ops);
 	tipc_unregister_sysctl();
 
 	pr_info("Deactivated\n");
