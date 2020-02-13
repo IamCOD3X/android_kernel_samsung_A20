@@ -4390,6 +4390,8 @@ int iscsit_close_connection(
 	 * must wait until they have completed.
 	 */
 	iscsit_check_conn_usage_count(conn);
+	target_sess_cmd_list_set_waiting(sess->se_sess);
+	target_wait_for_sess_cmds(sess->se_sess);
 
 	if (conn->conn_rx_hash.tfm)
 		crypto_free_hash(conn->conn_rx_hash.tfm);
