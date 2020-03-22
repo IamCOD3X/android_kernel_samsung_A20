@@ -231,7 +231,17 @@ static int ghes_estatus_pool_expand(unsigned long len)
 			return ret;
 	}
 
-	return 0;
+	addr = (unsigned long)vmalloc(PAGE_ALIGN(len));
+	if (!addr)
+		return -ENOMEM;
+
+	/*
+	 * New allocation must be visible in all pgd before it can be found by
+	 * an NMI allocating from the pool.
+	 */
+	vmalloc_sync_mappings();
+
+	return gen_pool_add(ghes_estatus_pool, addr, PAGE_ALIGN(len), -1);
 }
 
 static struct ghes *ghes_new(struct acpi_hest_generic *generic)
