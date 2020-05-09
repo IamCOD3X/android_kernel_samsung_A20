@@ -229,8 +229,11 @@ static int kgdb_compiled_brk_fn(struct pt_regs *regs, unsigned int esr)
 
 static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned int esr)
 {
-	kgdb_handle_exception(1, SIGTRAP, 0, regs);
-	return 0;
+	if (user_mode(regs))
+		return DBG_HOOK_ERROR;
+
+	kgdb_handle_exception(0, SIGTRAP, 0, regs);
+	return DBG_HOOK_HANDLED;
 }
 
 static struct break_hook kgdb_brkpt_hook = {
