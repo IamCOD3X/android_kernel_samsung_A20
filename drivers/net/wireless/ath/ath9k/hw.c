@@ -282,7 +282,15 @@ static void ath9k_hw_read_revisions(struct ath_hw *ah)
 		return;
 	}
 
-	val = REG_READ(ah, AR_SREV) & AR_SREV_ID;
+	srev = REG_READ(ah, AR_SREV);
+
+	if (srev == -1) {
+		ath_err(ath9k_hw_common(ah),
+			"Failed to read SREV register");
+		return false;
+	}
+
+	val = srev & AR_SREV_ID;
 
 	if (val == 0xFF) {
 		val = REG_READ(ah, AR_SREV);
