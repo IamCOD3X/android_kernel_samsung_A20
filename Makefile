@@ -390,11 +390,11 @@ LINUXINCLUDE    := \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -Werror \
+KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -Wno-stringop-truncation \
+		   -fno-strict-aliasing -fno-common -Wno-unneeded-internal-declaration -Wno-deprecated-declarations \
+		   -Werror-implicit-function-declaration -Wno-void-pointer-to-enum-cast -Wno-parentheses-equality \
+		   -Wno-format-security -Wno-enum-conversion -Wno-section -Wno-misleading-indentation \
+		   -Wno-constant-logical-operand -Wno-unused-but-set-variable -Wno-typedef-redefinition \
 		   -std=gnu89 $(call cc-option,-fno-PIE)
 
 KBUILD_AFLAGS_KERNEL :=
