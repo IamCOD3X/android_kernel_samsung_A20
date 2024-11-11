@@ -392,7 +392,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -Wno-stringop-truncation \
 		   -fno-strict-aliasing -fno-common -Wno-deprecated-declarations \
-		   -Werror-implicit-function-declaration -Wno-enum-int-mismatch -Wno-restrict \
+		   -Wno-implicit-function-declaration -Wno-enum-int-mismatch -Wno-restrict \
 		   -Wno-format-security -Wno-enum-conversion -Wno-misleading-indentation \
 		   -Wno-unused-but-set-variable \
 		   -std=gnu89 $(call cc-option,-fno-PIE)
