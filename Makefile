@@ -256,7 +256,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?=arm64
-CROSS_COMPILE	?= $(srctree)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+CROSS_COMPILE	?= $(srctree)/toolchain/gcc-linaro-14/bin/aarch64-linux-gnu-
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -391,12 +391,12 @@ LINUXINCLUDE    := \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -Wno-stringop-truncation \
-		   -fno-strict-aliasing -fno-common -Wno-unneeded-internal-declaration -Wno-deprecated-declarations \
-		   -Werror-implicit-function-declaration -Wno-void-pointer-to-enum-cast -Wno-parentheses-equality \
-		   -Wno-format-security -Wno-enum-conversion -Wno-section -Wno-misleading-indentation \
-		   -Wno-constant-logical-operand -Wno-unused-but-set-variable -Wno-typedef-redefinition \
+		   -fno-strict-aliasing -fno-common -Wno-deprecated-declarations \
+		   -Werror-implicit-function-declaration \
+		   -Wno-format-security -Wno-enum-conversion -Wno-misleading-indentation \
+		   -Wno-unused-but-set-variable \
 		   -std=gnu89 $(call cc-option,-fno-PIE)
-
+# -Wno-unneeded-internal-declaration  -Wno-void-pointer-to-enum-cast  -Wno-parentheses-equality  -Wno-section -Wno-constant-logical-operand  -Wno-typedef-redefinition
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__ $(call cc-option,-fno-PIE)
