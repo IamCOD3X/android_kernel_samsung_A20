@@ -4,4 +4,15 @@ clang
 
 out/*
 
+toolchain/GCC
+
 kali-nethunter-kernel/*
+certs/signing_key.pem
+certs/signing_key.x509
+certs/x509.genkey
+logs
+security/samsung/defex_lsm/cert/pubkey_eng.der
+security/samsung/defex_lsm/cert/pubkey_user.der
+security/samsung/defex_lsm/defex_packed_rules.bin
+
+
