@@ -270,7 +270,7 @@ void rtw_regd_apply_flags(struct wiphy *wiphy)
 	//u32 freq;
 
 	/* all channels enable */
-	for (i = 0; i < NUM_NL80211_BANDS; i++) {
+	for (i = 0; i < IEEE80211_NUM_BANDS; i++) {
 		sband = wiphy->bands[i];
 
 		if (sband) {
