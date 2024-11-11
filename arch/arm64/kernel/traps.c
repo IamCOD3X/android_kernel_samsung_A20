@@ -456,12 +456,9 @@ void die(const char *str, struct pt_regs *regs, int err)
 		panic("Fatal exception in interrupt");
 	if (panic_on_oops)
 		panic("Fatal exception");
-<<<<<<< HEAD
 #endif
-=======
 
 	raw_spin_unlock_irqrestore(&die_lock, flags);
->>>>>>> e86206bd8758 (arm64: traps: disable irq in die())
 
 	if (ret != NOTIFY_STOP)
 		do_exit(SIGSEGV);
