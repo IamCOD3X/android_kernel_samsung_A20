@@ -525,7 +525,6 @@ static int ecryptfs_lookup_interpose(struct dentry *dentry,
 	if (!lower_inode) {
 		/* We want to add because we couldn't find in lower */
 		d_add(dentry, NULL);
-#endif
 		return 0;
 	}
 	inode = __ecryptfs_get_inode(lower_inode, dir_inode->i_sb);
