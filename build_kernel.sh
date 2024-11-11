@@ -9,6 +9,6 @@ export KBUILD_BUILD_USER=IamCOD3X
 export KBUILD_BUILD_HOST=RYZEN
 export DTC_EXT=/usr/bin/dtc
 
-make O=out ARCH=arm64 exynos7885-a20_defconfig
-make O=out ARCH=arm64 -j$(nproc --all)
+make ARCH=arm64 nethunter_defconfig
+make ARCH=arm64 -j$(nproc --all)
 
