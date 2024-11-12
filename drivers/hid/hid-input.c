@@ -1063,8 +1063,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
 mapped:
 	/* Mapping failed, bail out */
 	if (!bit)
-<<<<<<< HEAD
-=======
 		return;
 
 	if (device->driver->input_mapped &&
@@ -1074,7 +1072,6 @@ mapped:
 		 * The driver indicated that no further generic handling
 		 * of the usage is desired.
 		 */
->>>>>>> de801a7d3228 (HID: core: Sanitize event code and type when mapping input)
 		return;
 
 	if (device->driver->input_mapped && device->driver->input_mapped(device,
