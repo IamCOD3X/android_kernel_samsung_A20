@@ -1025,16 +1025,6 @@ static void redirty_tail_locked(struct inode *inode, struct bdi_writeback *wb)
 	}
 	inode_io_list_move_locked(inode, wb, &wb->b_dirty);
 	inode->i_state &= ~I_SYNC_QUEUED;
-<<<<<<< HEAD
-}
-
-static void redirty_tail(struct inode *inode, struct bdi_writeback *wb)
-{
-	spin_lock(&inode->i_lock);
-	__redirty_tail(inode, wb);
-	spin_unlock(&inode->i_lock);
-=======
->>>>>>> 05829bc2388c (writeback: Avoid skipping inode writeback)
 }
 
 static void redirty_tail(struct inode *inode, struct bdi_writeback *wb)
