@@ -1553,20 +1553,6 @@ static int s3c24xx_serial_init_port(struct s3c24xx_uart_port *ourport,
 		if (ret > 0)
 			ourport->tx_irq = ret;
 	}
-	/*
-	 * DMA is currently supported only on DT platforms, if DMA properties
-	 * are specified.
-	 */
-	if (platdev->dev.of_node && of_find_property(platdev->dev.of_node,
-						     "dmas", NULL)) {
-		ourport->dma = devm_kzalloc(port->dev,
-					    sizeof(*ourport->dma),
-					    GFP_KERNEL);
-		if (!ourport->dma) {
-			ret = -ENOMEM;
-			goto err;
-		}
-	}
 
 #if defined(CONFIG_PM) && defined(CONFIG_SND_SAMSUNG_AUDSS)
 	if (ourport->domain == DOMAIN_AUD)
