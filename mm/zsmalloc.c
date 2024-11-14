@@ -2303,12 +2303,12 @@ static unsigned long zs_can_compact(struct size_class *class)
 	return obj_wasted * class->pages_per_zspage;
 }
 
-static unsigned long __zs_compact(struct zs_pool *pool,
+static void __zs_compact(struct zs_pool *pool,
 				   struct size_class *class)
 {
 	struct zs_compact_control cc;
-	struct page *src_page;
-	struct page *dst_page = NULL;
+	struct zspage *src_zspage;
+	struct zspage *dst_zspage = NULL;
 	unsigned long pages_freed = 0;
 
 	spin_lock(&class->lock);
@@ -2336,9 +2336,11 @@ static unsigned long __zs_compact(struct zs_pool *pool,
 		if (dst_zspage == NULL)
 			break;
 
-		putback_zspage(pool, class, dst_page);
-		if (putback_zspage(pool, class, src_page) == ZS_EMPTY)
-			pages_freed += class->pages_per_zspage;
+		putback_zspage(class, dst_zspage);
+		if (putback_zspage(class, src_zspage) == ZS_EMPTY) {
+			free_zspage(pool, class, src_zspage);
+			pool->stats.pages_compacted += class->pages_per_zspage;
+		}
 		spin_unlock(&class->lock);
 		cond_resched();
 		spin_lock(&class->lock);
@@ -2364,11 +2366,11 @@ unsigned long zs_compact(struct zs_pool *pool)
 			continue;
 		if (class->index != i)
 			continue;
-		pages_freed += __zs_compact(pool, class);
+		__zs_compact(pool, class);
 	}
 	atomic_long_add(pages_freed, &pool->stats.pages_compacted);
 
-	return pages_freed;
+	return  pool->stats.pages_compacted;
 }
 EXPORT_SYMBOL_GPL(zs_compact);
 
@@ -2384,7 +2386,7 @@ static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
 	unsigned long pages_freed;
 	struct zs_pool *pool = container_of(shrinker, struct zs_pool,
 			shrinker);
-
+	
 	/*
 	 * Compact classes and calculate compaction delta.
 	 * Can run concurrently with a manually triggered
