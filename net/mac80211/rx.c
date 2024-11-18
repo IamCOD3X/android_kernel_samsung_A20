@@ -1810,6 +1810,7 @@ ieee80211_reassemble_find(struct ieee80211_sub_if_data *sdata,
 static ieee80211_rx_result debug_noinline
 ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
 {
+	struct ieee80211_sub_if_data *sdata = &rx->sdata;
 	struct ieee80211_hdr *hdr;
 	u16 sc;
 	__le16 fc;
@@ -1828,7 +1829,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
 	frag = sc & IEEE80211_SCTL_FRAG;
 
 	if (rx->sta)
-		cache = &rx->sta->frags;
+		sdata = &rx->sta;
 
 	if (likely(!ieee80211_has_morefrags(fc) && frag == 0))
 		goto out;
