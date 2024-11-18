@@ -252,6 +252,7 @@ void ath9k_hw_get_channel_centers(struct ath_hw *ah,
 
 static void ath9k_hw_read_revisions(struct ath_hw *ah)
 {
+	u32 srev;
 	u32 val;
 
 	if (ah->get_mac_revision)
